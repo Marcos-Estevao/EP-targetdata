@@ -22,6 +22,7 @@ def consulta_cep():
 
     if response.status_code == 200:
         return jsonify(response.json()), 200
+
     else:
         return jsonify({'erro': 'CEP inválido'}), 400
 
