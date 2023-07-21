@@ -36,7 +36,16 @@ def consulta_cep():
         localidade_encode = urllib.parse.quote(localidade)
         response = requests.get(f'http://servicos.cptec.inpe.br/XML/listaCidades?city={localidade_encode}')
         inpe_json_response = convert_xml_to_json(response.text)
-        return jsonify(inpe_json_response), 200
+        if isinstance(inpe_json_response['cidades']['cidade'], list):
+            id_cidade = inpe_json_response['cidades']['cidade'][0]['id']
+        else:
+            id_cidade = inpe_json_response['cidades']['cidade']['id']
+
+        response = requests.get(f'http://servicos.cptec.inpe.br/XML/cidade/{id_cidade}/previsao.xml')
+        inpe_json_response = convert_xml_to_json(response.text)
+
+        return inpe_json_response
+
 
     else:
         return jsonify({'erro': 'CEP inválido'}), 400
