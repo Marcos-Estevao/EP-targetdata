@@ -46,9 +46,8 @@ def consulta_cep():
 
         return inpe_json_response
 
-
     else:
-        return jsonify({'erro': 'CEP inválido'}), 400
+        return jsonify({'erro': 'CEP inválido'}),
 
 
 if __name__ == '__main__':
