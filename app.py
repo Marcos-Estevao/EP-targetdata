@@ -31,7 +31,8 @@ def consulta_cep():
     response = requests.get(f'https://viacep.com.br/ws/{cep}/json/')
 
     if response.status_code == 200:
-        localidade = response.json()['localidade']
+        via_cep_response = response.json()
+        localidade = via_cep_response['localidade']
         localidade = unidecode(localidade)
         localidade_encode = urllib.parse.quote(localidade)
         response = requests.get(f'http://servicos.cptec.inpe.br/XML/listaCidades?city={localidade_encode}')
@@ -43,8 +44,8 @@ def consulta_cep():
 
         response = requests.get(f'http://servicos.cptec.inpe.br/XML/cidade/{id_cidade}/previsao.xml')
         inpe_json_response = convert_xml_to_json(response.text)
-
-        return inpe_json_response
+        combinado = {**via_cep_response, **inpe_json_response}
+        return combinado
 
     else:
         return jsonify({'erro': 'CEP inválido'}),
