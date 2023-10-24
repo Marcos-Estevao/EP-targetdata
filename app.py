@@ -48,7 +48,7 @@ def consulta_cep():
         return combinado
 
     else:
-        return jsonify({'erro': 'CEP inválido'}),
+        return jsonify({'erro': 'CEP inválido'}), 400
 
 
 if __name__ == '__main__':
